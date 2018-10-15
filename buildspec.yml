@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+    - printenv
+    - cd $CODEBUILD_SRC_DIR; npm install
+  pre_build:
+    commands:
+    - echo "pre build phase"
+  build:
+    commands:
+    - echo "build phase"
+    - export REACT_APP_STAGE="prod"
+    - cd $CODEBUILD_SRC_DIR; npm run build
+  post_build:
+    commands:
+    - echo "post build phase"
+    - cd $CODEBUILD_SRC_DIR; aws s3 cp build/ s3://fluent.smiles.com.br --recursive
+artifacts:
+  files:
+  - build*/**
+  discard-paths: yes
