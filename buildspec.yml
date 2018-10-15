@@ -16,7 +16,7 @@ phases:
   post_build:
     commands:
     - echo "post build phase"
-    - cd $CODEBUILD_SRC_DIR; aws s3 cp build/ s3://fluent.smiles.com.br --recursive
+    - cd $CODEBUILD_SRC_DIR; aws s3 cp build/ s3://fluent-talki --recursive
 artifacts:
   files:
   - build*/**
