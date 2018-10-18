@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import { Container, Row, Col, Button, ButtonGroup } from 'reactstrap';
+import { Container, Row, Col, Button } from 'reactstrap';
 import Toggle from 'react-toggle';
 import './App.css'
 
