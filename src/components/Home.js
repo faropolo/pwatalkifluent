@@ -48,7 +48,7 @@ class Home extends Component {
               </Col>
             </Row>
             <Row>
-              <Col md={{ size: 4, offset: 4 }} className='bg-light text-center fixed-bottom'>
+              <Col md={{ size: 4, offset: 4 }} className='bg-light text-center fixed-bottom pb-4'>
                   <div className='d-inline col-md-1'> <Link to='/home' className='text-dark'>Home</Link> </div>
                   <div className='d-inline col-md-1'> <Link to='/ganhos' className='text-dark'>Ganhos</Link> </div>
                   <div className='d-inline col-md-1'> <Link to='/avaliacoes' className='text-dark'>Avaliaçoes</Link> </div>
