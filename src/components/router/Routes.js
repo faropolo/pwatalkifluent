@@ -1,8 +1,8 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
 import Home from '../Home'
-import Login from '../Login'
-import LoginFederated from '../LoginFederated'
+import Login from '../auth/Login'
+import LoginFederated from '../auth/LoginFederated'
 
 //TODO Adicionar metodo de validacao para rotas privadas
 export default ({childProps}) =>

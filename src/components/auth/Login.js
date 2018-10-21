@@ -3,7 +3,7 @@ import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import {Redirect} from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
-import logo from './logo.svg';
+import logo from '../logo.svg';
 
 
 class Login extends Component {
