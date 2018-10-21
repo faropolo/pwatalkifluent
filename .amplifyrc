@@ -1,0 +1,14 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "pwatalkifluent-20181021091648-authRole",
+            "UnauthRoleArn": "arn:aws:iam::413494101492:role/pwatalkifluent-20181021091648-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::413494101492:role/pwatalkifluent-20181021091648-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "pwatalkifluent-20181021091648-deployment",
+            "UnauthRoleName": "pwatalkifluent-20181021091648-unauthRole",
+            "StackName": "pwatalkifluent-20181021091648",
+            "StackId": "arn:aws:cloudformation:us-east-1:413494101492:stack/pwatalkifluent-20181021091648/2fbcc310-d52b-11e8-8003-503acac5c0fd"
+        }
+    }
+}
