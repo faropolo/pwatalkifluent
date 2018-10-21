@@ -54,7 +54,7 @@ class LoginFederated extends Component {
     componentWillMount() {
         Auth.currentAuthenticatedUser()
             .then(user => this.setState({ logged: true}))
-            .catch(err => console.log(err));
+            .catch(err => console.log(err)); 
     } 
 
     handleAuthStateChange(state) { 
