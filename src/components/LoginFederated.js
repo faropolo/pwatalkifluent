@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { withFederated } from 'aws-amplify-react';
-import { Button, Fa } from 'mdbreact';
+import { withFederated, Auth } from 'aws-amplify-react';
+// import { Button, Fa } from 'mdbreact';
 import { Container, Row, Col, CardBody, Card, CardTitle } from 'reactstrap';
 
 const Buttons = (props) => (
@@ -26,6 +26,15 @@ class LoginFederated extends Component {
     }
 
     render() {
+
+        Auth.currentAuthenticatedUser()
+            .then(user => console.log(user))
+            .catch(err => console.log(err));
+
+        let session = Auth.currentSession();
+
+        console.log(session, '<===== Session')
+
         return (
             <Container>
                 <Row>
