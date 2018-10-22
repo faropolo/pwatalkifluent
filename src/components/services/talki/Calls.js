@@ -2,7 +2,7 @@ import { API } from 'aws-amplify';
 
 function getWaitingTalki() {
     let apiName = 'Talki';
-    let path = '/talki/call/talki'; 
+    let path = '/call/talki'; 
     let myInit = { 
         headers: {},
         response: true, // OPTIONAL (return the entire Axios response object instead of only response.data)

@@ -43,7 +43,7 @@ var config = {
         endpoints: [
             {
                 name: "Talki",
-                endpoint: "https://api.talki.com.br/v1/talki/"
+                endpoint: "https://api.talki.com.br/v1/talki"
             }
         ]
     }
