@@ -10,11 +10,7 @@ function getWaitingTalki() {
             userID: '22222'
         }
     }
-    API.get(apiName, path, myInit).then(response => {
-        // Add your code here
-    }).catch(error => {
-        console.log(error.response)
-    });
+    return API.get(apiName, path, myInit)
 }
 
 export default {

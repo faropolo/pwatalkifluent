@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import { API } from 'aws-amplify';
 import logo from './logo.svg';
 import { Container, Row, Col } from 'reactstrap';
 import Toggle from 'react-toggle';
+import Services from './services'
 import './Home.css'
 
 
@@ -17,6 +17,15 @@ class Home extends Component {
     this.state = {
       fluentIsOnline: false
     }
+  }
+
+  handleFluentOnline() {
+    this.timer = setInterval(()=> this.getItems(), 2000);
+  }
+
+  getItems() {
+    Services.getWaitingTalki()
+      .then(dados => console.log(dados))
   }
 
   render() {
@@ -34,7 +43,7 @@ class Home extends Component {
                       <Toggle
                         id='fluent-online'
                         defaultChecked={this.state.fluentIsOnline}
-                        onChange={this.handleCheeseChange} />
+                        onChange={this.handleFluentOnline} />
                   </div>
               </Col>
             </Row>
