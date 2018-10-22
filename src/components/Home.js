@@ -15,7 +15,8 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      fluentIsOnline: false
+      fluentIsOnline: false,
+      talkiList: []
     }
   }
 
@@ -30,7 +31,12 @@ class Home extends Component {
 
   getItems() {
     Services.getWaitingTalki()
-      .then(dados => console.log(dados))
+      .then(dados => {
+        console.log(dados, '<==== Dados')
+      })
+      .catch( error => {
+        console.log(error, '<== Error')
+      })
   }
 
   render() {
@@ -59,7 +65,9 @@ class Home extends Component {
             </Row>
             <Row>
               <Col md={{ size: 4, offset: 4 }} className="text-center border" >
-                Fila Vazia
+                {this.state.talkiList 
+                  ? this.state.talkiList
+                  : "Fila Vazia"}
               </Col>
             </Row>
             <Row>
