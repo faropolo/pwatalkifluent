@@ -19,8 +19,13 @@ class Home extends Component {
     }
   }
 
-  handleFluentOnline() {
-    this.timer = setInterval(()=> this.getItems(), 2000);
+  handleFluentOnline(event) {
+    if (event.target.checked) {
+      this.timer = setInterval(()=> this.getItems(), 2000);
+    } else {
+      clearInterval(this.timer)
+      this.timer = null
+    }
   }
 
   getItems() {
@@ -43,7 +48,7 @@ class Home extends Component {
                       <Toggle
                         id='fluent-online'
                         defaultChecked={this.state.fluentIsOnline}
-                        onChange={this.handleFluentOnline} />
+                        onChange={ event => this.handleFluentOnline(event)} />
                   </div>
               </Col>
             </Row>
