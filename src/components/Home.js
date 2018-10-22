@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
+import { API } from 'aws-amplify';
 import logo from './logo.svg';
 import { Container, Row, Col } from 'reactstrap';
 import Toggle from 'react-toggle';
