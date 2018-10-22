@@ -1,7 +1,7 @@
 import { API } from 'aws-amplify';
 
 function getWaitingTalki() {
-    let apiName = 'TalkiApiGateway';
+    let apiName = 'Talki';
     let path = '/talki/call/talki'; 
     let myInit = { 
         headers: {},

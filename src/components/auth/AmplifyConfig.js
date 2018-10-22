@@ -38,6 +38,14 @@ var config = {
         
         // OPTIONAL - Manually set the authentication flow type. Default is 'USER_SRP_AUTH'
         //authenticationFlowType: 'USER_PASSWORD_AUTH'
+    },
+    API: {
+        endpoints: [
+            {
+                name: "Talki",
+                endpoint: "https://api.talki.com.br/v1/talki/"
+            }
+        ]
     }
 }
 
