@@ -32,7 +32,17 @@ class Home extends Component {
   getItems() {
     Services.getWaitingTalki()
       .then(dados => {
-        console.log(dados, '<==== Dados')
+        let talkiList = dados.map( item => {
+            return (<Row>
+                <Col md={{ size: 4, offset: 4 }} className="text-center border">
+                    <span>Teacher: {item.TeacherID}</span>
+                    <span>User: {item.UserID}</span>
+                </Col>
+            </Row>)
+        })
+
+        this.setState({ talkiList })
+        
       })
       .catch( error => {
         console.log(error, '<== Error')
