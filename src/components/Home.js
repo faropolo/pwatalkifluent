@@ -4,6 +4,8 @@ import logo from './logo.svg';
 import { Container, Row, Col } from 'reactstrap';
 import Toggle from 'react-toggle';
 import Services from './services'
+import { SignOut } from 'aws-amplify-react';
+
 import './Home.css'
 
 
@@ -42,7 +44,7 @@ class Home extends Component {
         })
 
         this.setState({ talkiList })
-        
+
       })
       .catch( error => {
         console.log(error, '<== Error')

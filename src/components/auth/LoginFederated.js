@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { withFederated } from 'aws-amplify-react';
-import { Auth } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 import { Container, Row, Col, CardBody, Card, CardTitle } from 'reactstrap';
+import { SignOut } from 'aws-amplify-react';
 import './LoginFederated.css'
 
 const Buttons = (props) => (
@@ -45,36 +46,47 @@ class LoginFederated extends Component {
 
     constructor(props) {
         super(props)
+        this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
+        this.loadUser = this.loadUser.bind(this);
+        
+        Hub.listen('auth', this)
 
         this.state ={
-            logged: false
+            user: null
         }
     }
 
     componentWillMount() {
-        Auth.currentAuthenticatedUser()
-            .then(user => this.setState({ logged: true}))
-            .catch(err => console.log(err)); 
-    } 
+        this.loadUser()
+    }
 
-    handleAuthStateChange(state) { 
+    onHubCapsule(capsule) {
+        this.loadUser();
+    }
+
+    loadUser() {
+        Auth.currentAuthenticatedUser()
+            .then(user => this.setState({ user }))
+            .catch(err => this.setState({ user : null }))
+    }
+
+    handleAuthStateChange(state, data) { 
+        console.log('logged', '<=logado')
         this.setState({ logged: true})
     }
 
     render() {
-        if (this.state.logged) {
-            return (<Redirect to='/home'/>)            
-        }
-
         return (
             <Container>
+                { this.state.logged && <Redirect to='/home'/> }
+
                 <Row>
                     <Col sm='9' md='7' lg='5' className='mx-auto' >
                         <Card>
                             <CardBody >
                                 <CardTitle>Sign In</CardTitle>
                                 <hr className="my-4" />
-                                <Federated federated={federated} onStateChange={(authState) => console.log(authState)} />
+                                <Federated federated={federated} onStateChange={this.handleAuthStateChange} />
                             </CardBody>
                         </Card>
                     </Col>
