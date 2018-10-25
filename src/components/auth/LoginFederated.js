@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom'
 import { withFederated } from 'aws-amplify-react';
 import { Auth, Hub } from 'aws-amplify';
 import { Container, Row, Col, CardBody, Card, CardTitle } from 'reactstrap';
-import { SignOut } from 'aws-amplify-react';
 import './LoginFederated.css'
 
 const Buttons = (props) => (
@@ -71,7 +70,6 @@ class LoginFederated extends Component {
     }
 
     handleAuthStateChange(state, data) { 
-        console.log('logged', '<=logado')
         this.setState({ logged: true})
     }
 
