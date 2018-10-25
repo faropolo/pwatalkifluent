@@ -29,6 +29,10 @@ class Home extends Component {
     }
   }
 
+  componentWillMount() {
+    this.loadUser()
+  } 
+  
   handleFluentOnline(event) {
     if (event.target.checked) {
       this.timer = setInterval(()=> this.getItems(), 2000);
