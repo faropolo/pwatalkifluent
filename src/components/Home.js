@@ -4,7 +4,7 @@ import logo from './logo.svg';
 import { Container, Row, Col, Button } from 'reactstrap';
 import Toggle from 'react-toggle';
 import Services from './services'
-import { Auth, Hub } from 'aws-amplify';
+import { Auth, Cache } from 'aws-amplify';
 
 import './Home.css'
 
@@ -18,9 +18,6 @@ class Home extends Component {
     super(props)
     
     this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
-    this.loadUser = this.loadUser.bind(this);
-
-    Hub.listen('auth', this)
 
     this.state = {
       fluentIsOnline: false,
@@ -30,9 +27,18 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    this.loadUser()
+    Auth.currentAuthenticatedUser()
+        .then(user => {
+            this.setState({ user })
+
+            Cache.getItem('federatedInfo').then(federatedInfo => {
+                const { token } = federatedInfo;
+                console.log(federatedInfo, '<=== Federated Info')
+            });
+        })
+        .catch(err => this.setState({ user : null }))
   } 
-  
+
   handleFluentOnline(event) {
     if (event.target.checked) {
       this.timer = setInterval(()=> this.getItems(), 2000);
@@ -49,8 +55,9 @@ class Home extends Component {
         let talkiList = dados.map( item => {
             return (<Row>
                 <Col md={{ size: 4, offset: 4 }} className="text-center border">
-                    <span>Teacher: {item.TeacherID}</span>
-                    <span>User: {item.UserID}</span>
+                    <img src={item.picture} className="rounded-circle" alt="Cinque Terre" />
+                    <span>Fulano da Silva</span>
+                    <span>10:10</span>
                 </Col>
             </Row>)
         })
@@ -63,18 +70,9 @@ class Home extends Component {
       })
   }
 
-  onHubCapsule(capsule) {
-    this.loadUser();
-  }
-
-  loadUser() {
-    Auth.currentAuthenticatedUser()
-        .then(user => this.setState({ user }))
-        .catch(err => this.setState({ user : null }))
-  }
-
   signOut() {
     Auth.signOut()
+    this.props.history.push("/");
   }
 
   handleAuthStateChange(state, data) { 
@@ -84,13 +82,12 @@ class Home extends Component {
   render() {
     return (
       <div className="App">
-        { !this.state.user && <Redirect to='/'/> }
         <header className="App-header"></header>
         <div>
           <Container fluid={true} className="justify-content-center">
             <Row>
               <Col md={{ size: 4, offset: 4 }} className="text-center sticky-top">
-                  <div className='d-inline col-md-1 '> <Button onClick={this.signOut}> Sair </Button> </div>
+                  <div className='d-inline col-md-1 '> <Button onClick={() => this.signOut() }> Sair </Button> </div>
                   <div className='d-inline col-md-1'> <img src={logo} alt="logo" className="image-fluid logo" />  </div>
                   <div className='d-inline col-md-1'> Talki </div>
                   <div className='d-inline col-md-1'>

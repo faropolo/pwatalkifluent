@@ -46,30 +46,14 @@ class LoginFederated extends Component {
     constructor(props) {
         super(props)
         this.handleAuthStateChange = this.handleAuthStateChange.bind(this);
-        this.loadUser = this.loadUser.bind(this);
-        
-        Hub.listen('auth', this)
 
-        this.state ={
+        this.state = {
             user: null
         }
     }
 
-    componentWillMount() {
-        this.loadUser()
-    }
-
-    onHubCapsule(capsule) {
-        this.loadUser();
-    }
-
-    loadUser() {
-        Auth.currentAuthenticatedUser()
-            .then(user => this.setState({ user }))
-            .catch(err => this.setState({ user : null }))
-    }
-
     handleAuthStateChange(state, data) { 
+        console.log(state, data, '<==== user')
         this.setState({ logged: true})
     }
 
