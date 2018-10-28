@@ -1,5 +1,11 @@
 import Talki from './talki'
 
-export default {
-    getWaitingTalki: Talki.getWaitingTalki
+function createInstance() {
+    let talki = Talki.createInstance()
+
+    return { talki }
 }
+
+let defaultInstance = createInstance()
+
+export default defaultInstance

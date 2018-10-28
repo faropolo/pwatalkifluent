@@ -4,7 +4,7 @@ import logo from './logo.svg';
 import { Container, Row, Col, Button } from 'reactstrap';
 import Toggle from 'react-toggle';
 import Services from './services'
-import { Auth, Cache } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 
 import './Home.css'
 
@@ -30,11 +30,6 @@ class Home extends Component {
     Auth.currentAuthenticatedUser()
         .then(user => {
             this.setState({ user })
-
-            Cache.getItem('federatedInfo').then(federatedInfo => {
-                const { token } = federatedInfo;
-                console.log(federatedInfo, '<=== Federated Info')
-            });
         })
         .catch(err => this.setState({ user : null }))
   } 
@@ -50,7 +45,7 @@ class Home extends Component {
   }
 
   getItems() {
-    Services.getWaitingTalki()
+    Services.talki.calls.getWaitingTalki()
       .then(dados => {
         let talkiList = dados.map( item => {
             return (<Row>

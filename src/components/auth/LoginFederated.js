@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { withFederated } from 'aws-amplify-react';
-import { Auth, Hub } from 'aws-amplify';
+import services from '../services'
 import { Container, Row, Col, CardBody, Card, CardTitle } from 'reactstrap';
 import './LoginFederated.css'
 
@@ -53,7 +53,13 @@ class LoginFederated extends Component {
     }
 
     handleAuthStateChange(state, data) { 
-        console.log(state, data, '<==== user')
+        
+        // if (!data.email) {
+             
+        // }
+
+        services.talki.member.saveMemberData( data ).then( response => { console.log(response)}).catch( err=> { console.log(err) })
+        
         this.setState({ logged: true})
     }
 

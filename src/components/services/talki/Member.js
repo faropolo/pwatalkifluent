@@ -3,8 +3,8 @@ import { API } from 'aws-amplify';
 function createInstance() {
     let apiName = 'Talki';
 
-    function getWaitingTalki() {
-        let path = '/call/talki'; 
+    function saveMemberData( data ) {
+        let path = '/member'; 
         let myInit = { 
             headers: {   
                 "Access-Control-Allow-Headers": "Access-Control-Allow-Methods, Access-Control-Allow-Origin, X-Requested-With, Content-Type, Accept, Authorization",
@@ -12,15 +12,16 @@ function createInstance() {
                 "Access-Control-Allow-Credentials": "true",
                 "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT"
             },
-            response: false, // OPTIONAL (return the entire Axios response object instead of only response.data)
-            queryStringParameters: {  
-                userID: '22222'
-            }
+
+            body: data
         }
-        return API.get(apiName, path, myInit)
+
+        console.log(myInit)
+
+        return API.post(apiName, path, myInit)
     }
 
-    return {getWaitingTalki}
+    return { saveMemberData }
 }
 
 export default {
