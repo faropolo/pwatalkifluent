@@ -54,12 +54,9 @@ class LoginFederated extends Component {
 
     handleAuthStateChange(state, data) { 
         
-        // if (!data.email) {
-             
-        // }
+        data.type = 'fluent'
 
-        services.talki.member.saveMemberData( data ).then( response => { console.log(response)}).catch( err=> { console.log(err) })
-        
+        services.talki.member.saveMemberData( data )
         this.setState({ logged: true})
     }
 

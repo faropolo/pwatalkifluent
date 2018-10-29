@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import {  faUserCircle, faPhone } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import logo from './logo.svg';
 import { Container, Row, Col, Button } from 'reactstrap';
 import Toggle from 'react-toggle';
@@ -7,7 +9,6 @@ import Services from './services'
 import { Auth } from 'aws-amplify';
 
 import './Home.css'
-
 
 /**
  * Fluent
@@ -48,11 +49,18 @@ class Home extends Component {
     Services.talki.calls.getWaitingTalki()
       .then(dados => {
         let talkiList = dados.map( item => {
-            return (<Row>
-                <Col md={{ size: 4, offset: 4 }} className="text-center border">
-                    <img src={item.picture} className="rounded-circle" alt="Cinque Terre" />
+            return (<Row key={item}>
+                <Col sm='2' md='2' lg='2' className="">
+                    <FontAwesomeIcon icon={faUserCircle} size="3x" />
+                </Col>
+                <Col sm='6' md='6' lg='6' className="">
                     <span>Fulano da Silva</span>
+                </Col>
+                <Col sm='2' md='2' lg='2' className="">
                     <span>10:10</span>
+                </Col>
+                <Col sm='2' md='2' lg='2' className="">
+                    <FontAwesomeIcon icon={faPhone}  size="3x" transform="shrink-6" color="white" mask={['far', 'circle']} style={{background:"green"}}/>
                 </Col>
             </Row>)
         })

@@ -16,8 +16,6 @@ function createInstance() {
             body: data
         }
 
-        console.log(myInit)
-
         return API.post(apiName, path, myInit)
     }
 
