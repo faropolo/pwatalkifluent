@@ -32,8 +32,11 @@ class Home extends Component {
         .then(user => {
             this.setState({ user })
         })
-        .catch(err => this.setState({ user : null }))
-  } 
+        .catch(err => {
+            this.setState({ user : null })
+            this.props.history.push("/");
+        })
+  }
 
   handleFluentOnline(event) {
     if (event.target.checked) {
@@ -48,13 +51,14 @@ class Home extends Component {
   getItems() {
     Services.talki.calls.getWaitingTalki()
       .then(dados => {
+        console.log(dados)
         let talkiList = dados.map( item => {
             return (<Row key={item}>
                 <Col sm='2' md='2' lg='2' className="">
                     <FontAwesomeIcon icon={faUserCircle} size="3x" />
                 </Col>
                 <Col sm='6' md='6' lg='6' className="">
-                    <span>Fulano da Silva</span>
+                    <span>{item.TalkiName}</span>
                 </Col>
                 <Col sm='2' md='2' lg='2' className="">
                     <span>10:10</span>
