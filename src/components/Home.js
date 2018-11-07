@@ -7,6 +7,7 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import Toggle from 'react-toggle';
 import Services from './services'
 import { Auth } from 'aws-amplify';
+import Call from './Call'
 
 import './Home.css'
 
@@ -23,7 +24,8 @@ class Home extends Component {
     this.state = {
       fluentIsOnline: false,
       talkiList: [],
-      user: null
+      user: null,
+      callID: null
     }
   }
 
@@ -47,13 +49,17 @@ class Home extends Component {
       this.setState({ talkiList : [] })
     }
   }
+  
+  onCall(callID) {
+    console.log(callID)
+    this.setState({ callID })
+  }
 
   getItems() {
     Services.talki.calls.getWaitingTalki()
       .then(dados => {
-        console.log(dados)
         let talkiList = dados.map( item => {
-            return (<Row key={item}>
+            return (<Row key={item.UserID}>
                 <Col sm='2' md='2' lg='2' className="">
                     <FontAwesomeIcon icon={faUserCircle} size="3x" />
                 </Col>
@@ -64,7 +70,9 @@ class Home extends Component {
                     <span>10:10</span>
                 </Col>
                 <Col sm='2' md='2' lg='2' className="">
-                    <FontAwesomeIcon icon={faPhone}  size="3x" transform="shrink-6" color="white" mask={['far', 'circle']} style={{background:"green"}}/>
+                    <a onClick={()=> this.onCall(item.UserID)} >
+                      <FontAwesomeIcon icon={faPhone}  size="3x" transform="shrink-6" color="white" mask={['far', 'circle']} style={{background:"green"}}/>
+                    </a>
                 </Col>
             </Row>)
         })
@@ -117,6 +125,14 @@ class Home extends Component {
                   : "Fila Vazia"}
               </Col>
             </Row>
+            {this.state.callID && (
+              <Row>
+                <Col md={{ size: 4, offset: 4 }} className="text-center border" >
+                    <Call channel={this.state.callID} />
+                </Col>
+              </Row>
+             
+            )}
             <Row>
               <Col md={{ size: 4, offset: 4 }} className='bg-light text-center fixed-bottom pb-4'>
                   <div className='d-inline col-md-1'> <Link to='/home' className='text-dark'>Home</Link> </div>

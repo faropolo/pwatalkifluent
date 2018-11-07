@@ -12,6 +12,7 @@
     "i": "^0.3.6",
     "mdbreact": "^4.8.1",
     "npm": "^6.4.1",
+    "pubnub-react": "^1.2.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-facebook-login": "^4.1.1",
