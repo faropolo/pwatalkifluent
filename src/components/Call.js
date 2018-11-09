@@ -27,7 +27,10 @@ class Call extends Component {
         this.pubnub.subscribe({ channels: [ this.channel ], withPresence: true });
         
         this.pubnub.getMessage( this.channel, (msg) => {
-            let {desc, candidate} = msg
+            let {desc, candidate} = msg.message
+
+            console.log(desc, 'desc')
+            console.log(candidate, 'candidate')
 
             try {
                 if (desc) {
@@ -42,7 +45,7 @@ class Call extends Component {
 
                             this.pc.createAnswer().then( answer => {
                                 this.pc.setLocalDescription( answer );
-                                this.pubnub.publish({desc: this.pc.localDescription, channel: this.channel});
+                                this.pubnub.publish({message: {desc: this.pc.localDescription}, channel: this.channel});
                             })
                         })    
                         
@@ -52,7 +55,7 @@ class Call extends Component {
                         console.log('Unsupported SDP type.');
                   }
                 } else if (candidate) {
-                    this.pc.addIceCandidate(candidate);
+                    this.pc.addIceCandidate(candidate).catch( err => { console.log('Error on add IceCandidate', err.name) });
                 }
             } catch (err) {
                 console.error(err);
@@ -66,14 +69,14 @@ class Call extends Component {
 
         this.pc.onicecandidate = (iceEvent) => {
             let {candidate} = iceEvent
-            this.pubnub.publish({candidate, channel: this.channel}).catch( err => { console.log(err)})
+            this.pubnub.publish({message: { candidate } , channel: this.channel}).catch( err => { console.log(err)})
         };
 
         this.pc.onnegotiationneeded = async () => {
             try {
               await this.pc.setLocalDescription(await this.pc.createOffer());
               // send the offer to the other peer
-              this.pubnub.publish({desc: this.pc.localDescription, channel: this.channel})
+              this.pubnub.publish({message: { desc: this.pc.localDescription}, channel: this.channel})
                 .catch( err => {
                     console.log(err)
                 });
@@ -85,11 +88,8 @@ class Call extends Component {
         this.pc.ontrack = (event) => {
             // don't set srcObject again if it is already set.
             if (this.state.remoteViewSrc) return;
-            this.setState ({ remoteViewSrc: event.streams[0] });
-
-            // if (this.remoteVideoRef.current && this.remoteVideoRef.current.srcObject !== this.props.stream) {
-            //     this.remoteVideoRef.current.srcObject = this.state.remoteViewSrc;
-            // }
+            this.localVideoRef.current.srcObject = event.streams[0]
+            // this.setState ({ remoteViewSrc: event.streams[0] });
         };
 
         navigator.mediaDevices.getUserMedia(this.constraints).then( stream => {
@@ -106,22 +106,20 @@ class Call extends Component {
     }
 
     componentDidUpdate() {
-        if (this.localVideoRef.current && this.localVideoRef.current.srcObject !== this.state.localViewSrc) {
-            this.localVideoRef.current.srcObject = this.state.localViewSrc;
-        }
-        if (this.remoteVideoRef.current && this.remoteVideoRef.current.srcObject !== this.state.localViewSrc) {
-            this.remoteVideoRef.current.srcObject = this.state.localViewSrc;
-        }
+        // if (this.localVideoRef.current && this.localVideoRef.current.srcObject !== this.state.localViewSrc) {
+        //     this.localVideoRef.current.srcObject = this.state.localViewSrc;
+        // }
+        // if (this.remoteVideoRef.current && this.remoteVideoRef.current.srcObject !== this.state.localViewSrc) {
+        //     this.remoteVideoRef.current.srcObject = this.state.localViewSrc;
+        // }
 
-        console.log(this.localVideoRef)
-        console.log(this.remoteVideoRef)
+        // console.log(this.localVideoRef)
+        // console.log(this.remoteVideoRef)
     }
 
     render() {
         return (
             <div>
-
-                {/* <video ref={ video => {video.srcObject = this.state.localViewSrc}} autoPlay playsInline></video> */}
 
                 <video ref={this.localVideoRef} autoPlay playsInline></video>
                 <video ref={this.remoteVideoRef}  autoPlay playsInline></video>
