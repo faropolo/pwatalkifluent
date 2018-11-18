@@ -25,7 +25,8 @@ class Home extends Component {
       fluentIsOnline: false,
       talkiList: [],
       user: null,
-      callID: null
+      callID: null,
+      talkiName: null
     }
   }
 
@@ -50,9 +51,8 @@ class Home extends Component {
     }
   }
   
-  onCall(callID) {
-    console.log(callID)
-    this.setState({ callID })
+  onCall(callID, talkiName) {
+    this.setState({ callID, talkiName })
   }
 
   getItems() {
@@ -70,7 +70,7 @@ class Home extends Component {
                     <span>10:10</span>
                 </Col>
                 <Col sm='2' md='2' lg='2' className="">
-                    <a onClick={()=> this.onCall(item.UserID)} >
+                    <a href='z' onClick={(e)=> {e.preventDefault(); this.onCall(item.UserID, item.TalkiName)}} >
                       <FontAwesomeIcon icon={faPhone}  size="3x" transform="shrink-6" color="white" mask={['far', 'circle']} style={{background:"green"}}/>
                     </a>
                 </Col>
@@ -95,6 +95,14 @@ class Home extends Component {
   }
 
   render() {
+
+    const {talkiName, callID, user} = this.state
+    const callProps = { 
+        talkiName,
+        fluentName: user?user.name:'',
+        channel: callID,
+    }
+
     return (
       <div className="App">
         <header className="App-header"></header>
@@ -128,7 +136,7 @@ class Home extends Component {
             {this.state.callID && (
               <Row>
                 <Col md={{ size: 4, offset: 4 }} className="text-center border" >
-                    <Call channel={this.state.callID} />
+                    <Call {...callProps} />
                 </Col>
               </Row>
              
