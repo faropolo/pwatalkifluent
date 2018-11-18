@@ -21,18 +21,33 @@ class Call extends Component {
 
         this.signalling = new PubNubReact({ publishKey: 'pub-c-b62c19de-59df-4410-8abc-665b6eea4215', subscribeKey: 'sub-c-db022eb0-85d5-11e6-8409-0619f8945a4f' });
         this.signalling.init(this)
-
-        this.rtc = TalkiRTC(this.signalling, this.channel, this.fluentName, this.talkiName, this.localVideoRef, this.remoteVideoRef)
     }
 
     componentWillMount() {
-        this.signalling.getMessage(this.channel, (msg) => {
-            this.rtc.processMessage(msg)
+        
+        let headers = new Headers({
+            "Authorization": `Basic ${btoa("FabioLopes:66150712-eb7c-11e8-8f49-0242ac110003")}`,
+          });
+        let requestInit = {
+            method: 'PUT',
+            headers,
+        }
+
+        fetch('https://global.xirsys.net/_turn/talki', requestInit).then( response => {
+            return response.json()
+        }).then( response=> {
+            this.rtc = TalkiRTC(this.signalling, this.channel, this.fluentName, this.talkiName, this.localVideoRef, this.remoteVideoRef, response.v.iceServers)
+    
+            this.signalling.getMessage(this.channel, (msg) => {
+                this.rtc.processMessage(msg)
+            })
+
+            this.rtc.doCall()
+
         })
     }
 
     componentDidMount() {
-        this.rtc.doCall()
     }
 
     render() {

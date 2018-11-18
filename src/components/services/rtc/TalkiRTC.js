@@ -1,5 +1,5 @@
 
-function TalkiRTC(signalling, channel, fluentName, talkiName, localVideo, remoteVideo) {
+function TalkiRTC(signalling, channel, fluentName, talkiName, localVideo, remoteVideo, iceServers) {
 
     const mediaConstraints = {
         audio: true, 
@@ -10,11 +10,8 @@ function TalkiRTC(signalling, channel, fluentName, talkiName, localVideo, remote
         
     signalling.subscribe({ channels: [ channel ], withPresence: true });
 
-    // signalling.getMessage(channel, (msg) => {
-    // })
-
     const createPeerConnection = () => {
-        talkiPC = new RTCPeerConnection({iceServers: [{urls: 'stun:stun1.l.google.com:19302'}]})
+        talkiPC = new RTCPeerConnection({iceServers})
 
         talkiPC.onicecandidate = handleICECandidateEvent;
         talkiPC.ontrack = handleTrackEvent;
@@ -37,6 +34,7 @@ function TalkiRTC(signalling, channel, fluentName, talkiName, localVideo, remote
 
     const handleTrackEvent = (event) => {
         console.log(event, '<====== ontrack')
+        if (remoteVideo.current.srcObject) return
         remoteVideo.current.srcObject = event.streams[0];
     }
 
@@ -167,14 +165,14 @@ function TalkiRTC(signalling, channel, fluentName, talkiName, localVideo, remote
             var candidate = new RTCIceCandidate(msg.candidate);
 
             talkiPC.addIceCandidate(candidate).catch(reportError);
+        } else if (msg.type === 'video-answer') {
+            let desc = new RTCSessionDescription(msg.sdp);
+            talkiPC.setRemoteDescription(desc).catch(reportError)
         }
     }
 
     const sendToServer = (message) => {
-        console.log({message, channel})
-        signalling.publish({message, channel}, (response)=>{
-            console.log(response)
-        })
+        signalling.publish({message, channel})
     }
 
     return {doCall, hangUpCall, processMessage}
