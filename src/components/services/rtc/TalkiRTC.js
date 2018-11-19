@@ -160,7 +160,10 @@ function TalkiRTC(signalling, channel, fluentName, talkiName, localVideo, remote
             .catch(handleGetUserMediaError);
     }
 
-    const processMessage = (msg) => {
+    const processMessage = (message) => {
+        
+        let msg = message.message
+
         if (msg.candidate) {
             var candidate = new RTCIceCandidate(msg.candidate);
 
@@ -168,6 +171,8 @@ function TalkiRTC(signalling, channel, fluentName, talkiName, localVideo, remote
         } else if (msg.type === 'video-answer') {
             let desc = new RTCSessionDescription(msg.sdp);
             talkiPC.setRemoteDescription(desc).catch(reportError)
+
+            console.log(talkiPC)
         }
     }
 
