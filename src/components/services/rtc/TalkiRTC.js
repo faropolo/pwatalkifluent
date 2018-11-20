@@ -164,6 +164,7 @@ function TalkiRTC(signalling, channel, fluentName, talkiName, localVideo, remote
         
         let msg = message.message
 
+        console.log(msg, '<====== Mensagem')
         if (msg.candidate) {
             var candidate = new RTCIceCandidate(msg.candidate);
 
@@ -173,6 +174,8 @@ function TalkiRTC(signalling, channel, fluentName, talkiName, localVideo, remote
             talkiPC.setRemoteDescription(desc).catch(reportError)
 
             console.log(talkiPC)
+        } else if (message.type === 'hang-up') {
+            hangUpCall()
         }
     }
 
